@@ -16,6 +16,7 @@ import javax.validation.Valid;
 
 import static org.springframework.http.HttpStatus.OK;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/samurais")
 public class SamuraiController {

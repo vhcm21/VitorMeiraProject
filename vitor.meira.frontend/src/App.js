@@ -1,6 +1,13 @@
+import Welcome from './Welcome/index.jsx'
+import { SamuraiProvider } from './Context/index.jsx'
+
 function App() {
   return (
-    <p>Olá</p>
+    <>
+    <SamuraiProvider>
+      <Welcome id={1}></Welcome>
+    </SamuraiProvider>
+    </>
   );
 }
 
