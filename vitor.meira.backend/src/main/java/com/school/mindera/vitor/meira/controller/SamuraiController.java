@@ -29,7 +29,7 @@ public class SamuraiController {
     }
 
     @PostMapping
-    public ResponseEntity<SamuraiDetailsDto> createUser(@Valid @RequestBody CreateOrUpdateSamuraiDetailsDto createOrUpdateSamuraiDetailsDto) {
+    public ResponseEntity<SamuraiDetailsDto> createSamurai(@Valid @RequestBody CreateOrUpdateSamuraiDetailsDto createOrUpdateSamuraiDetailsDto) {
         LOGGER.info("Request to create new samurai - {}", createOrUpdateSamuraiDetailsDto);
 
         SamuraiDetailsDto samuraiDetailsDto;

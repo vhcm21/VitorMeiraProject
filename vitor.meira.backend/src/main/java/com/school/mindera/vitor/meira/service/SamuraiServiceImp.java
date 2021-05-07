@@ -9,6 +9,8 @@ import com.school.mindera.vitor.meira.error.ErrorMessages;
 import com.school.mindera.vitor.meira.exception.DatabaseCommunicationException;
 import com.school.mindera.vitor.meira.exception.SamuraiNotFoundException;
 import com.school.mindera.vitor.meira.persistence.entity.SamuraiEntity;
+import com.school.mindera.vitor.meira.persistence.repository.ClanRepository;
+import com.school.mindera.vitor.meira.persistence.repository.ProvinceRepository;
 import com.school.mindera.vitor.meira.persistence.repository.SamuraiRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,15 +23,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class SamuraiServiceImp implements SamuraiService {
     private static final Logger LOGGER = LogManager.getLogger(SamuraiController.class);
 
     private final SamuraiRepository samuraiRepository;
+    private final ClanRepository clanRepository;
+    private final ProvinceRepository provinceRepository;
 
-    public SamuraiServiceImp(SamuraiRepository samuraiRepository) {
+    public SamuraiServiceImp(SamuraiRepository samuraiRepository,
+                             ClanRepository clanRepository, ProvinceRepository provinceRepository) {
         this.samuraiRepository = samuraiRepository;
+        this.clanRepository = clanRepository;
+        this.provinceRepository = provinceRepository;
     }
 
     @Override
@@ -37,6 +45,12 @@ public class SamuraiServiceImp implements SamuraiService {
         LOGGER.debug("Creating samurai {} ", createOrUpdateSamuraiDetailsDto);
 
         SamuraiEntity samuraiEntity = SamuraiConverter.fromCreateSamuraiDtoToSamuraiEntity(createOrUpdateSamuraiDetailsDto);
+        try {
+            samuraiEntity.setClan(clanRepository.findById(createOrUpdateSamuraiDetailsDto.getClanId()).get());
+            samuraiEntity.setProvince(provinceRepository.findById(createOrUpdateSamuraiDetailsDto.getProvinceId()).get());
+        } catch (NoSuchElementException e){
+            throw e;
+        }
 
 
         LOGGER.info("Persisting samurai into database");
@@ -49,7 +63,12 @@ public class SamuraiServiceImp implements SamuraiService {
 
         LOGGER.debug("Retrieving created samurai");
 
-        return SamuraiConverter.fromSamuraiEntityToSamuraiDetailsDto(samuraiEntity);
+        SamuraiDetailsDto samuraiDetailsDto = SamuraiConverter.fromSamuraiEntityToSamuraiDetailsDto(samuraiEntity);
+
+        samuraiDetailsDto.setClanId(samuraiEntity.getClan().getId());
+        samuraiDetailsDto.setProvinceId(samuraiEntity.getProvince().getId());
+
+        return samuraiDetailsDto;
     }
 
     @Override

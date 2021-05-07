@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Builder
@@ -24,4 +25,7 @@ public class ClanEntity extends AbstractEntity {
 
     @Column(nullable = false, length = 100)
     private String birthProvince;
+
+    @OneToMany(mappedBy = "clan")
+    private List<SamuraiEntity> samurais;
 }

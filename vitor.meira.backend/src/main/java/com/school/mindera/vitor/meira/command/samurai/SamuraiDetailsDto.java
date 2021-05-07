@@ -13,4 +13,6 @@ public class SamuraiDetailsDto {
     private long birthYear;
     private long deathYear;
     private Gender gender;
+    private long clanId;
+    private long provinceId;
 }

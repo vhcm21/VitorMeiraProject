@@ -32,14 +32,11 @@ public class SamuraiEntity extends AbstractEntity {
     @Column(nullable = false)
     private Gender gender;
 
-    @Override
-    public String toString() {
-        return "SamuraiEntity{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", birthYear=" + birthYear +
-                ", deathYear=" + deathYear +
-                ", gender=" + gender.name() +
-                '}';
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clanId", nullable = false)
+    private ClanEntity clan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "provinceId", nullable = false)
+    private ProvinceEntity province;
 }

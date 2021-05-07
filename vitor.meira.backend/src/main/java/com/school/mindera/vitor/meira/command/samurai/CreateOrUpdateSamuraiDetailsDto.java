@@ -22,4 +22,10 @@ public class CreateOrUpdateSamuraiDetailsDto {
 
     @NotNull(message = "Must have gender")
     private Gender gender;
+
+    @NotNull(message = "Must have id of clan")
+    private long clanId;
+
+    @NotNull(message = "Must have id of province")
+    private long provinceId;
 }
